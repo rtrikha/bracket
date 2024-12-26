@@ -1,10 +1,3 @@
-//
-//  Untitled.swift
-//  Brackets
-//
-//  Created by R Trikha on 26/12/24.
-//
-
 import SwiftUI
 import UIKit
 

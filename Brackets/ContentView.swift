@@ -1,61 +1,76 @@
-//
-//  ContentView.swift
-//  Brackets
-//
-//  Created by R Trikha on 23/12/24.
-//
-
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @State private var text: String = ""
+    @State private var currentLineNumber: Int = 1
+    @State private var lineNumbers: [String] = (1...30).map { "\($0)" }
+    @State private var isEditing: Bool = false
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
-        }
-    }
+        NavigationView {
+            ZStack(alignment: .top) {
+                Color.black
+                    .ignoresSafeArea()
+                    .ignoresSafeArea(.keyboard)
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
+                VStack(spacing: 0) {
+                    HStack {
+                        Spacer()
+                        //EditButton(isEditing: $isEditing)
+                            .padding(.trailing, 8)
+                    }
+                    .padding(.top, 8)
 
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+                    HStack(spacing: 0) {
+                        ZStack(alignment: .topTrailing) {
+                            CustomTextEditor(
+                                text: .constant(lineNumbers.joined(separator: "\n")),
+                                currentLineNumber: $currentLineNumber,
+                                isEditing: $isEditing,
+                                lineSpacing: 4,
+                                isEditable: false,
+                                highlightedLine: currentLineNumber,
+                                fontSize: Constants.fontConstants.inputFont,
+                                fontWeight: "Regular",
+                                textAlignment: .right,
+                                showLineHighlight: true
+
+                            )
+                            .frame(width: 30)
+                            .padding(.trailing,0)
+                            .background(Color.clear)
+                            .multilineTextAlignment(.trailing)
+                        }
+
+                        CustomTextEditor(
+                            text: $text,
+                            currentLineNumber: $currentLineNumber,
+                            isEditing: $isEditing,
+                            lineSpacing: 4,
+                            isEditable: true,
+                            fontSize: Constants.fontConstants.inputFont,
+                            fontWeight: "Medium",
+                            showLineHighlight: true
+                        )
+                        .background(.clear)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.top, 16)
+                    .ignoresSafeArea(.keyboard)
+
+                }
             }
+            .navigationBarHidden(true)
         }
+        .onChange(of: currentLineNumber) { oldValue, newValue in
+            print("Current line: \(newValue)")
+        }
+        .ignoresSafeArea(.keyboard)
+
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }
