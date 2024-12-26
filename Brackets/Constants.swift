@@ -2,15 +2,13 @@ import Foundation
 import SwiftUI
 
 enum Constants {
-    // Debug Settings
     struct debug {
-        static let showBounds = true  // Toggle this to show/hide borders
+        static let showBounds = true
     }
     
-    // App Text
     struct fontConstants {
         static let inputFont: CGFloat = 14
-        static let inputLineKerning: CGFloat = -0.5 // Add this constant
+        static let inputLineKerning: CGFloat = -0.5
 
     }
     
@@ -18,30 +16,30 @@ enum Constants {
         static let openingBrace: String = "{"
         static let closingBrace: String = "}"
         static let todoTemplate: String = "{ TODO  }"
-        static let openingBracket: String = "[" // Add this constant
-        static let closingBracket: String = "]" // Add this constant
-        static let reminderTemplate: String = "[ REMINDER  ]" // Add this constant
+        static let openingBracket: String = "["
+        static let closingBracket: String = "]"
+        static let reminderTemplate: String = "[ REMINDER  ]"
         static let todoKeyword = "TODO"
         static let reminderKeyword = "REMINDER"
-        static let todoKeywordRange = NSRange(location: 2, length: 4) // position of "TODO"
-        static let reminderKeywordRange = NSRange(location: 2, length: 8) // position of "REMINDER"
+        static let todoKeywordRange = NSRange(location: 2, length: 4)
+        static let reminderKeywordRange = NSRange(location: 2, length: 8)
     }
 
     struct styleConstants {
-        static let baselineHeight: CGFloat = 13 // Add this constant for fixed height
+        static let baselineHeight: CGFloat = 13
         
         static let todoStyle: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor(colorConstants.lightFg),
             .backgroundColor: UIColor(colorConstants.accent),
             .font: UIFont(name: "GeistMono-Bold", size: fontConstants.inputFont) ?? .boldSystemFont(ofSize: fontConstants.inputFont),
-            .baselineOffset: (baselineHeight - fontConstants.inputFont) / 2 // Center the text vertically
+            .baselineOffset: (baselineHeight - fontConstants.inputFont) / 2
         ]
         
         static let reminderStyle: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor(colorConstants.lightFg),
             .backgroundColor: UIColor(colorConstants.accent),
             .font: UIFont(name: "GeistMono-Bold", size: fontConstants.inputFont) ?? .boldSystemFont(ofSize: fontConstants.inputFont),
-            .baselineOffset: (baselineHeight - fontConstants.inputFont) / 2 // Center the text vertically
+            .baselineOffset: (baselineHeight - fontConstants.inputFont) / 2
         ]
         
         static let bracketStyle: [NSAttributedString.Key: Any] = [
@@ -52,7 +50,6 @@ enum Constants {
         static let templateMargin: CGFloat = 1
     }
     
-    // Other constants can be added here
     struct colorConstants {
         static let darkBg: Color = Color.black
         static let darkFg: Color = Color(#colorLiteral(red: 0.3019607365, green: 0.3019607365, blue: 0.3019607365, alpha: 1))
@@ -66,7 +63,6 @@ enum Constants {
     }
 }
 
-// Custom Border Modifier
 struct Border: ViewModifier {
     let color: Color
     let width: CGFloat
@@ -80,7 +76,6 @@ struct Border: ViewModifier {
     }
 }
 
-// Extension to make it easier to use
 extension View {
     func drawBounds() -> some View {
         modifier(Constants.viewModifiers.drawBounds)
